@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TerorismePS</title>
 
 <style>
 :root {
-  --bg: #111;
-  --card: #1b1b1b;
-  --text: #fff;
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --text: #111;
+  --soft: #f0f0f0;
 }
 
-.light {
-  --bg: #f2f2f2;
-  --card: #ffffff;
-  --text: #000;
+.dark {
+  --bg: #0f1115;
+  --card: #161b22;
+  --text: #e6edf3;
+  --soft: #21262d;
 }
 
 body {
@@ -24,49 +27,102 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 50px;
+  transition: 0.3s;
 }
 
-.card {
-  width: 350px;
-  background: var(--card);
-  padding: 20px;
-  border-radius: 15px;
-}
-
-/* BANNER */
-.banner {
-  height: 120px;
-  background: url('/banner.png') center/cover;
-  border-radius: 10px;
-  position: relative;
-}
-
-/* MENU (NEMPEL BANGET DI POJOK) */
+/* ☰ MENU (LUAR CARD - POJOK KANAN ATAS) */
 .menu-btn {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  font-size: 16px;
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
   cursor: pointer;
-  background: rgba(0,0,0,0.5);
-  padding: 3px 7px;
-  border-radius: 6px;
+  background: var(--card);
+  padding: 6px 10px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  width: 400px;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 /* STATUS BOX */
 .status-box {
-  width: 10px;
-  height: 10px;
-  display: inline-block;
-  border-radius: 2px;
-  margin-right: 6px;
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
 }
 
-/* STATS (INI BIAR SAMA KAYAK LU) */
+/* TITLE */
+.title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* STATUS TEXT */
+.status-text {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* BANNER */
+.banner {
+  width: 100%;
+  height: 130px;
+  border-radius: 15px;
+  background: url('/banner.png') center/cover no-repeat;
+}
+
+/* ROW */
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+/* BUTTON */
+.join-btn {
+  background: var(--soft);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.join-btn:hover {
+  opacity: 0.8;
+}
+
+/* ONLINE */
+.online-box {
+  background: var(--soft);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+/* STATS */
 .stats {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .stat {
@@ -74,101 +130,119 @@ body {
   font-size: 12px;
 }
 
-/* BUTTON */
-.btn {
-  margin-top: 10px;
-  padding: 8px;
-  background: #333;
-  border-radius: 8px;
+/* TOGGLE */
+.toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
-  text-align: center;
+  font-size: 12px;
+}
+
+/* OWNER PANEL */
+.owner-panel {
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ☰ MENU LUAR -->
+<div class="menu-btn" onclick="openOwner()">☰</div>
+
 <div class="card">
 
-<h2 style="text-align:center;">TerorismePS</h2>
+  <div id="statusBox" class="status-box"></div>
 
-<div class="banner">
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-</div>
+  <div class="toggle" onclick="toggleMode()">🌓</div>
 
-<!-- STATUS (INI YG DITAMBAH TAPI GAK NGERUSAK) -->
-<p>
-  <span id="statusBox" class="status-box"></span>
-  <span id="status"></span>
-</p>
+  <div class="title">TerorismePS</div>
+  <div id="statusText" class="status-text">-</div>
 
-<p>Players: <span id="players"></span></p>
+  <div class="banner"></div>
 
-<div class="stats">
-  <div class="stat">🌍<br><span id="worlds">0</span></div>
-  <div class="stat">👤<br><span id="accounts">0</span></div>
-  <div class="stat">🛡<br><span id="guilds">0</span></div>
-</div>
-
-<!-- OWNER PANEL (HIDDEN) -->
-<div id="ownerPanel" style="display:none;">
-  <div class="stats">
-    <div class="stat">⚡<br><span id="cpu">0</span></div>
-    <div class="stat">🧠<br><span id="ram">0</span></div>
+  <div class="row">
+    <div class="join-btn" onclick="join()">JOIN SERVER</div>
+    <div class="online-box"><span id="players">0</span> online</div>
   </div>
-</div>
 
-<div class="btn" onclick="toggleTheme()">🌙 / ☀ Mode</div>
+  <div class="stats">
+    <div class="stat">🌍<br><span id="worlds">0</span><br>Worlds</div>
+    <div class="stat">👤<br><span id="accounts">0</span><br>Accounts</div>
+    <div class="stat">🛡<br><span id="guilds">0</span><br>Guilds</div>
+  </div>
+
+  <!-- OWNER PANEL -->
+  <div id="ownerPanel" class="owner-panel">
+    <div class="stats">
+      <div class="stat">⚡<br><span id="cpu">0</span><br>CPU</div>
+      <div class="stat">🧠<br><span id="ram">0</span><br>RAM</div>
+    </div>
+  </div>
 
 </div>
 
 <script>
-async function load() {
-  const res = await fetch("/api/status");
-  const d = await res.json();
-
-  status.innerText = d.status;
-
-  // KOTAK STATUS
-  if (d.status === "online") {
-    statusBox.style.background = "lime";
-  } else {
-    statusBox.style.background = "red";
-  }
-
-  players.innerText = d.players;
-  worlds.innerText = d.worlds;
-  accounts.innerText = d.accounts;
-  guilds.innerText = d.guilds;
+// JOIN
+function join() {
+  window.open("https://chat.whatsapp.com/DpHWmAOsvi16FNxbmwIP7u?mode=gi_t", "_blank");
 }
-setInterval(load,3000);
-load();
 
-// MENU OWNER
-function toggleMenu() {
+// DARK MODE
+function toggleMode() {
+  document.body.classList.toggle("dark");
+}
+
+// OWNER MENU
+function openOwner() {
   const pass = prompt("Owner password:");
 
   if (pass === "admin123") {
-    ownerPanel.style.display = "block";
+    document.getElementById("ownerPanel").style.display = "block";
     loadOwner();
   } else {
     alert("Wrong password");
   }
 }
 
-// LOAD OWNER
+// LOAD OWNER DATA
 async function loadOwner() {
   const res = await fetch("/api/status");
-  const d = await res.json();
+  const data = await res.json();
 
-  cpu.innerText = d.cpu + "%";
-  ram.innerText = d.ram.used + " GB";
+  document.getElementById("cpu").innerText = data.cpu + "%";
+  document.getElementById("ram").innerText = data.ram.used + " GB";
 }
 
-// DARK MODE
-function toggleTheme() {
-  document.body.classList.toggle("light");
+// LOAD DATA
+async function load() {
+  const res = await fetch("/api/status");
+  const data = await res.json();
+
+  const box = document.getElementById("statusBox");
+  const text = document.getElementById("statusText");
+
+  if (data.status === "online") {
+    box.style.background = "#3fb950";
+    text.innerText = "SERVER ONLINE";
+  } else {
+    box.style.background = "#f85149";
+    text.innerText = "SERVER OFFLINE";
+  }
+
+  document.getElementById("players").innerText = data.players;
+  document.getElementById("worlds").innerText = data.worlds || 0;
+  document.getElementById("accounts").innerText = data.accounts || 0;
+  document.getElementById("guilds").innerText = data.guilds || 0;
 }
+
+setInterval(load, 3000);
+load();
 </script>
 
 </body>
