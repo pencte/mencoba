@@ -6,204 +6,163 @@
 <title>Server Monitor</title>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Arial;
-}
-
 body {
-  background: #0f1115;
-  color: #e6edf3;
-}
-
-/* CONTAINER */
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 30px 20px;
-}
-
-/* HEADER */
-.header {
-  margin-bottom: 25px;
-}
-
-.header h1 {
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.header p {
-  font-size: 13px;
-  color: #8b949e;
-}
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
+  background: #f5f5f5;
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
 }
 
 /* CARD */
 .card {
-  background: #161b22;
-  border: 1px solid #21262d;
-  border-radius: 10px;
-  padding: 15px;
-  transition: 0.2s;
+  background: white;
+  width: 400px;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
-.card:hover {
-  border-color: #30363d;
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* STATUS BULAT */
+.status-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: green;
+  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
 }
 
 /* TITLE */
 .title {
-  font-size: 13px;
-  color: #8b949e;
-  margin-bottom: 6px;
-}
-
-/* VALUE */
-.value {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
-/* STATUS COLOR */
-.online { color: #3fb950; }
-.offline { color: #f85149; }
-.maintenance { color: #d29922; }
-
-/* PROGRESS BAR */
-.bar {
-  margin-top: 10px;
-  height: 6px;
-  background: #21262d;
+/* STATUS TEXT */
+.status-text {
+  margin-top: 5px;
+  font-size: 14px;
+  background: #e6f4ea;
+  padding: 3px 8px;
   border-radius: 10px;
-  overflow: hidden;
+  display: inline-block;
 }
 
-.fill {
-  height: 100%;
-  background: #58a6ff;
+/* BANNER */
+.banner {
+  margin-top: 15px;
+  width: 100%;
+  height: 120px;
+  border-radius: 15px;
+  background: url('banner.png') center/cover no-repeat;
 }
 
-/* PING */
-.ping-item {
+/* BUTTON + ONLINE */
+.row {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
-  margin-top: 6px;
+  margin-top: 15px;
 }
 
-/* FOOTER */
-.footer {
-  margin-top: 20px;
+/* JOIN BUTTON */
+.join-btn {
+  background: #f0f0f0;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ONLINE BOX */
+.online-box {
+  background: #f0f0f0;
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.stat {
+  text-align: center;
   font-size: 12px;
-  color: #6e7681;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
 
+  <!-- HEADER -->
   <div class="header">
-    <h1>Server Monitor</h1>
-    <p id="time">Loading...</p>
+    <div id="circle" class="status-circle"></div>
+    <div>
+      <div class="title">Bonner Pam</div>
+      <div id="status" class="status-text">UP</div>
+    </div>
   </div>
 
-  <div class="grid">
+  <!-- BANNER -->
+  <div class="banner"></div>
 
-    <!-- STATUS -->
-    <div class="card">
-      <div class="title">Status</div>
-      <div id="status" class="value">-</div>
-    </div>
-
-    <!-- PLAYER -->
-    <div class="card">
-      <div class="title">Players</div>
-      <div id="players" class="value">0</div>
-    </div>
-
-    <!-- CPU -->
-    <div class="card">
-      <div class="title">CPU Usage</div>
-      <div id="cpu" class="value">0%</div>
-      <div class="bar"><div id="cpuBar" class="fill"></div></div>
-    </div>
-
-    <!-- RAM -->
-    <div class="card">
-      <div class="title">Memory</div>
-      <div id="ram" class="value">0 / 0 GB</div>
-      <div class="bar"><div id="ramBar" class="fill"></div></div>
-    </div>
-
-    <!-- PING -->
-    <div class="card">
-      <div class="title">Ping (Asia)</div>
-
-      <div class="ping-item">SG <span id="sg">-</span></div>
-      <div class="ping-item">ID <span id="id">-</span></div>
-      <div class="ping-item">JP <span id="jp">-</span></div>
-      <div class="ping-item">IN <span id="in">-</span></div>
-
-    </div>
-
+  <!-- BUTTON + ONLINE -->
+  <div class="row">
+    <div class="join-btn">JOIN SERVER</div>
+    <div class="online-box"><span id="players">0</span> online</div>
   </div>
 
-  <div class="footer">
-    Realtime monitoring • auto refresh
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      🌍<br><span id="worlds">0</span><br>Worlds
+    </div>
+    <div class="stat">
+      👤<br><span id="accounts">0</span><br>Accounts
+    </div>
+    <div class="stat">
+      🛡<br><span id="guilds">0</span><br>Guilds
+    </div>
   </div>
 
 </div>
 
 <script>
 async function load() {
-  try {
-    const res = await fetch("/api/status");
-    const data = await res.json();
+  const res = await fetch("/api/status");
+  const data = await res.json();
 
-    // STATUS
-    const statusEl = document.getElementById("status");
-    statusEl.innerText = data.status?.toUpperCase();
+  const circle = document.getElementById("circle");
+  const status = document.getElementById("status");
 
-    statusEl.className = "value " + (
-      data.status === "online" ? "online" :
-      data.status === "offline" ? "offline" :
-      "maintenance"
-    );
-
-    // BASIC
-    document.getElementById("players").innerText = data.players;
-    document.getElementById("cpu").innerText = data.cpu + "%";
-    document.getElementById("ram").innerText =
-      data.ram.used + " / " + data.ram.total + " GB";
-
-    document.getElementById("time").innerText = data.time;
-
-    // BARS
-    document.getElementById("cpuBar").style.width = data.cpu + "%";
-
-    const ramPercent = (parseFloat(data.ram.used) / 1024) * 100;
-    document.getElementById("ramBar").style.width = ramPercent + "%";
-
-    // PING
-    document.getElementById("sg").innerText = data.ping?.SG + " ms";
-    document.getElementById("id").innerText = data.ping?.ID + " ms";
-    document.getElementById("jp").innerText = data.ping?.JP + " ms";
-    document.getElementById("in").innerText = data.ping?.IN + " ms";
-
-  } catch {
-    document.getElementById("status").innerText = "ERROR";
+  if (data.status === "online") {
+    circle.style.background = "green";
+    status.innerText = "UP";
+  } else {
+    circle.style.background = "red";
+    status.innerText = "DOWN";
   }
+
+  document.getElementById("players").innerText = data.players;
+  
+  // kalau belum ada di bot, kasih default
+  document.getElementById("worlds").innerText = data.worlds || 1000;
+  document.getElementById("accounts").innerText = data.accounts || 500;
+  document.getElementById("guilds").innerText = data.guilds || 10;
 }
 
 setInterval(load, 3000);
