@@ -1,40 +1,168 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>GTPS MONITOR</title>
-  <style>
-    body {
-      background: #0d1117;
-      color: white;
-      font-family: Arial;
-      text-align: center;
-    }
-    .card {
-      background: #161b22;
-      padding: 20px;
-      margin: 20px auto;
-      width: 300px;
-      border-radius: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Server Monitor</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial;
+}
+
+body {
+  background: #0f1115;
+  color: #e6edf3;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px 20px;
+}
+
+/* HEADER */
+.header {
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.header p {
+  font-size: 13px;
+  color: #8b949e;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+/* CARD */
+.card {
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 10px;
+  padding: 15px;
+  transition: 0.2s;
+}
+
+.card:hover {
+  border-color: #30363d;
+}
+
+/* TITLE */
+.title {
+  font-size: 13px;
+  color: #8b949e;
+  margin-bottom: 6px;
+}
+
+/* VALUE */
+.value {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* STATUS COLOR */
+.online { color: #3fb950; }
+.offline { color: #f85149; }
+.maintenance { color: #d29922; }
+
+/* PROGRESS BAR */
+.bar {
+  margin-top: 10px;
+  height: 6px;
+  background: #21262d;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #58a6ff;
+}
+
+/* PING */
+.ping-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #6e7681;
+}
+</style>
 </head>
+
 <body>
 
-<h1>🔥 TERORISMEPS MONITOR</h1>
+<div class="container">
 
-<div class="card">
-  <h2 id="status">Loading...</h2>
-  <p>👥 Player: <span id="player"></span></p>
-  <p>⚡ CPU: <span id="cpu"></span>%</p>
-  <p>🧠 RAM: <span id="ram"></span></p>
-</div>
+  <div class="header">
+    <h1>Server Monitor</h1>
+    <p id="time">Loading...</p>
+  </div>
 
-<div class="card">
-  <h3>🌏 Ping Asia</h3>
-  <p>SG: <span id="sg"></span> ms</p>
-  <p>ID: <span id="id"></span> ms</p>
-  <p>JP: <span id="jp"></span> ms</p>
-  <p>IN: <span id="in"></span> ms</p>
+  <div class="grid">
+
+    <!-- STATUS -->
+    <div class="card">
+      <div class="title">Status</div>
+      <div id="status" class="value">-</div>
+    </div>
+
+    <!-- PLAYER -->
+    <div class="card">
+      <div class="title">Players</div>
+      <div id="players" class="value">0</div>
+    </div>
+
+    <!-- CPU -->
+    <div class="card">
+      <div class="title">CPU Usage</div>
+      <div id="cpu" class="value">0%</div>
+      <div class="bar"><div id="cpuBar" class="fill"></div></div>
+    </div>
+
+    <!-- RAM -->
+    <div class="card">
+      <div class="title">Memory</div>
+      <div id="ram" class="value">0 / 0 GB</div>
+      <div class="bar"><div id="ramBar" class="fill"></div></div>
+    </div>
+
+    <!-- PING -->
+    <div class="card">
+      <div class="title">Ping (Asia)</div>
+
+      <div class="ping-item">SG <span id="sg">-</span></div>
+      <div class="ping-item">ID <span id="id">-</span></div>
+      <div class="ping-item">JP <span id="jp">-</span></div>
+      <div class="ping-item">IN <span id="in">-</span></div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Realtime monitoring • auto refresh
+  </div>
+
 </div>
 
 <script>
@@ -43,15 +171,35 @@ async function load() {
     const res = await fetch("/api/status");
     const data = await res.json();
 
-    document.getElementById("status").innerText = data.status?.toUpperCase();
-    document.getElementById("player").innerText = data.players;
-    document.getElementById("cpu").innerText = data.cpu;
-    document.getElementById("ram").innerText = data.ram?.used + " / " + data.ram?.total + " GB";
+    // STATUS
+    const statusEl = document.getElementById("status");
+    statusEl.innerText = data.status?.toUpperCase();
 
-    document.getElementById("sg").innerText = data.ping?.SG;
-    document.getElementById("id").innerText = data.ping?.ID;
-    document.getElementById("jp").innerText = data.ping?.JP;
-    document.getElementById("in").innerText = data.ping?.IN;
+    statusEl.className = "value " + (
+      data.status === "online" ? "online" :
+      data.status === "offline" ? "offline" :
+      "maintenance"
+    );
+
+    // BASIC
+    document.getElementById("players").innerText = data.players;
+    document.getElementById("cpu").innerText = data.cpu + "%";
+    document.getElementById("ram").innerText =
+      data.ram.used + " / " + data.ram.total + " GB";
+
+    document.getElementById("time").innerText = data.time;
+
+    // BARS
+    document.getElementById("cpuBar").style.width = data.cpu + "%";
+
+    const ramPercent = (parseFloat(data.ram.used) / 1024) * 100;
+    document.getElementById("ramBar").style.width = ramPercent + "%";
+
+    // PING
+    document.getElementById("sg").innerText = data.ping?.SG + " ms";
+    document.getElementById("id").innerText = data.ping?.ID + " ms";
+    document.getElementById("jp").innerText = data.ping?.JP + " ms";
+    document.getElementById("in").innerText = data.ping?.IN + " ms";
 
   } catch {
     document.getElementById("status").innerText = "ERROR";
