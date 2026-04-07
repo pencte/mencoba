@@ -1,0 +1,9 @@
+export default function handler(req, res) {
+  res.setHeader("Content-Type", "text/plain");
+  res.send(`139.99.72.27 growtopia1.com
+139.99.72.27 growtopia2.com
+139.99.72.27 www.growtopia1.com
+139.99.72.27 www.growtopia2.com
+
+# by test - terorismeps`);
+}

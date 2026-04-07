@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TerorismePS</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --text: #111;
+  --soft: #f0f0f0;
+}
+
+.dark {
+  --bg: #0f1115;
+  --card: #161b22;
+  --text: #e6edf3;
+  --soft: #21262d;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  transition: 0.3s;
+}
+
+.menu-btn {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  background: var(--card);
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 999;
+}
+
+.menu-dropdown {
+  position: fixed;
+  top: 45px;
+  right: 15px;
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: none;
+  overflow: hidden;
+}
+
+.menu-dropdown div {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.menu-dropdown div:hover {
+  background: var(--soft);
+}
+
+.card {
+  background: var(--card);
+  width: 400px;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+}
+
+.tab { display: none; }
+.tab.active { display: block; animation: slide 0.4s ease; }
+
+@keyframes slide {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.status-box {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.status-text {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.banner {
+  width: 100%;
+  height: 130px;
+  border-radius: 15px;
+  background: url('/banner.png') center/cover no-repeat;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.join-btn {
+  background: var(--soft);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.online-box {
+  background: var(--soft);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.stat {
+  text-align: center;
+  font-size: 12px;
+}
+
+.toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.owner-panel {
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+}
+
+/* HOWTO */
+.howto-content {
+  background: var(--soft);
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.platform {
+  padding: 8px 14px;
+  margin-right: 6px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #2d3748;
+  color: #fff;
+}
+
+.platform.active {
+  background: #4f7cff;
+}
+
+.howto-buttons button {
+  position: relative;
+  overflow: hidden;
+  padding: 8px 12px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.howto-buttons button.copied {
+  background: #3fb950 !important;
+  color: #fff;
+}
+
+.howto-buttons button.downloaded {
+  background: #4f7cff !important;
+  color: #fff;
+}
+
+.howto-buttons button::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.4s;
+}
+
+.howto-buttons button:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+.howto-text {
+  margin-top: 15px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="menu-btn" onclick="toggleMenu()">
+  <i class="fa-solid fa-bars"></i>
+</div>
+
+<div id="menuDropdown" class="menu-dropdown">
+  <div onclick="openTab('home')">Home</div>
+  <div onclick="openTab('howto')">How To Play</div>
+  <div onclick="openOwner()">Owner</div>
+</div>
+
+<div class="card">
+
+<div id="homeTab" class="tab active">
+
+  <div id="statusBox" class="status-box"></div>
+
+  <div class="toggle" onclick="toggleMode()">
+    <i class="fa-solid fa-moon"></i>
+  </div>
+
+  <div class="title">TerorismePS</div>
+  <div id="statusText" class="status-text">-</div>
+
+  <div class="banner"></div>
+
+  <div class="row">
+    <div class="join-btn" onclick="join()">
+      <i class="fa-solid fa-play"></i> JOIN SERVER
+    </div>
+    <div class="online-box">
+      <i class="fa-solid fa-users"></i> <span id="players">0</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">🌍<br><span id="worlds">0</span></div>
+    <div class="stat">👤<br><span id="accounts">0</span></div>
+    <div class="stat">🛡<br><span id="guilds">0</span></div>
+  </div>
+
+  <div id="ownerPanel" class="owner-panel">
+    <div class="stats">
+      <div class="stat">⚡<br><span id="cpu">0</span></div>
+      <div class="stat">🧠<br><span id="ram">0</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="howtoTab" class="tab">
+
+  <div class="howto-content">
+
+    <h2>How To Play</h2>
+
+    <div>
+      <button class="platform active" onclick="switchPlatform('android', this)">Android</button>
+      <button class="platform" onclick="switchPlatform('windows', this)">Windows</button>
+      <button class="platform" onclick="switchPlatform('ios', this)">iOS</button>
+    </div>
+
+    <div id="howtoText" class="howto-text"></div>
+
+  </div>
+
+</div>
+
+</div>
+
+<script>
+// DARK MODE LOAD
+if (localStorage.getItem("dark") === "true") {
+  document.body.classList.add("dark");
+}
+
+// JOIN
+function join() {
+  window.open("https://chat.whatsapp.com/DpHWmAOsvi16FNxbmwIP7u?mode=gi_t", "_blank");
+}
+
+// DARK MODE
+function toggleMode() {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("dark", document.body.classList.contains("dark"));
+}
+
+// MENU
+function toggleMenu() {
+  const m = document.getElementById("menuDropdown");
+  m.style.display = m.style.display === "block" ? "none" : "block";
+}
+
+// TAB
+function openTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById(tab + "Tab").classList.add("active");
+  document.getElementById("menuDropdown").style.display = "none";
+}
+
+// PLATFORM SWITCH
+function switchPlatform(type, btn) {
+  document.querySelectorAll(".platform").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  const text = document.getElementById("howtoText");
+
+  if (type === "android") {
+    text.innerHTML = `
+      <div class="howto-buttons">
+        <button onclick="copyURL(this)">Copy PowerTunnel</button>
+        <button onclick="downloadHost(this)">Download Host</button>
+        <button>Download PowerTunnel</button>
+      </div>
+      <br>
+      1. Download PowerTunnel<br>
+      2. Copy config<br>
+      3. Paste ke PowerTunnel<br>
+      4. Connect & Login
+    `;
+  }
+
+  if (type === "windows") {
+    text.innerHTML = `
+      <div class="howto-buttons">
+        <button onclick="downloadHost(this)">Download Host</button>
+      </div>
+      <br>
+      1. Download host.txt<br>
+      2. Replace di system32<br>
+      3. Jalankan Growtopia<br>
+      4. Login
+    `;
+  }
+
+  if (type === "ios") {
+    text.innerHTML = `
+      <div class="howto-buttons">
+        <button onclick="copyHost(this)">Copy Host</button>
+      </div>
+      <br>
+      1. Copy config<br>
+      2. Paste ke DNS/VPN app<br>
+      3. Open Growtopia<br>
+      4. Login
+    `;
+  }
+}
+
+// COPY ANDROID
+function copyURL(btn) {
+  navigator.clipboard.writeText(
+`139.99.72.27 growtopia1.com
+139.99.72.27 growtopia2.com
+139.99.72.27 www.growtopia1.com
+139.99.72.27 www.growtopia2.com
+
+# by test - terorismeps`
+  );
+  animateCopy(btn);
+}
+
+// COPY IOS
+function copyHost(btn) {
+  navigator.clipboard.writeText(
+`139.99.72.27 growtopia1.com
+139.99.72.27 growtopia2.com
+
+# by test - terorismeps`
+  );
+  animateCopy(btn);
+}
+
+// COPY ANIMATION
+function animateCopy(btn) {
+  const original = btn.innerHTML;
+  btn.innerHTML = "✔ Copied";
+  btn.classList.add("copied");
+
+  setTimeout(() => {
+    btn.innerHTML = original;
+    btn.classList.remove("copied");
+  }, 1500);
+}
+
+// DOWNLOAD HOST
+function downloadHost(btn) {
+  const content = `139.99.72.27 growtopia1.com
+139.99.72.27 growtopia2.com
+
+# by test - terorismeps`;
+
+  const blob = new Blob([content], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "host.txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+
+  const original = btn.innerHTML;
+  btn.innerHTML = "⬇ Downloading...";
+  btn.classList.add("downloaded");
+
+  setTimeout(() => {
+    btn.innerHTML = "✔ Downloaded";
+  }, 1200);
+
+  setTimeout(() => {
+    btn.innerHTML = original;
+    btn.classList.remove("downloaded");
+  }, 2500);
+}
+
+// LOAD DATA
+async function load() {
+  const res = await fetch("/api/status");
+  const data = await res.json();
+
+  const box = document.getElementById("statusBox");
+  const text = document.getElementById("statusText");
+
+  if (data.status === "online") {
+    box.style.background = "#3fb950";
+    text.innerText = "SERVER ONLINE";
+  } else {
+    box.style.background = "#f85149";
+    text.innerText = "SERVER OFFLINE";
+  }
+
+  document.getElementById("players").innerText = data.players;
+  document.getElementById("worlds").innerText = data.worlds || 0;
+  document.getElementById("accounts").innerText = data.accounts || 0;
+  document.getElementById("guilds").innerText = data.guilds || 0;
+}
+
+setInterval(load, 3000);
+load();
+
+// INIT
+switchPlatform("android", document.querySelector(".platform"));
+</script>
+
+</body>
+</html>
