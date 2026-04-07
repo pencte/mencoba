@@ -1,0 +1,149 @@
+:root {
+  --bg: #f5f5f5;
+  --card: #fff;
+  --text: #111;
+  --soft: #eee;
+}
+
+.dark {
+  --bg: #0f1115;
+  --card: #161b22;
+  --text: #e6edf3;
+  --soft: #21262d;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  transition: 0.3s;
+}
+
+/* MENU */
+.menu-btn {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  background: var(--card);
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.menu-dropdown {
+  position: fixed;
+  top: 45px;
+  right: 15px;
+  background: var(--card);
+  border-radius: 10px;
+  display: none;
+  overflow: hidden;
+}
+
+.menu-dropdown div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  width: 400px;
+  border-radius: 20px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* TAB */
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+/* SLIDE */
+.slide-in {
+  animation: slide 0.4s ease;
+}
+
+@keyframes slide {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* STATUS */
+.status-box {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ROW */
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.join-btn, .online-box {
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* HOWTO */
+.howto-box {
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.step {
+  display: none;
+}
+
+.step.active {
+  display: block;
+  animation: fade 0.3s;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.howto-nav {
+  margin-top: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
