@@ -5,245 +5,101 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TerorismePS</title>
 
-<style>
-:root {
-  --bg: #f5f5f5;
-  --card: #ffffff;
-  --text: #111;
-  --soft: #f0f0f0;
-}
+<link rel="stylesheet" href="style.css">
 
-.dark {
-  --bg: #0f1115;
-  --card: #161b22;
-  --text: #e6edf3;
-  --soft: #21262d;
-}
+<!-- FONT AWESOME -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial;
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-  transition: 0.3s;
-}
-
-/* ☰ MENU (LUAR CARD - POJOK KANAN ATAS) */
-.menu-btn {
-  position: fixed;
-  top: 10px;
-  right: 15px;
-  font-size: 20px;
-  cursor: pointer;
-  background: var(--card);
-  padding: 6px 10px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  z-index: 999;
-}
-
-/* CARD */
-.card {
-  background: var(--card);
-  width: 400px;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  position: relative;
-}
-
-/* STATUS BOX */
-.status-box {
-  width: 15px;
-  height: 15px;
-  border-radius: 4px;
-  position: absolute;
-  top: 15px;
-  left: 15px;
-}
-
-/* TITLE */
-.title {
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* STATUS TEXT */
-.status-text {
-  text-align: center;
-  font-size: 13px;
-  margin-bottom: 10px;
-}
-
-/* BANNER */
-.banner {
-  width: 100%;
-  height: 130px;
-  border-radius: 15px;
-  background: url('/banner.png') center/cover no-repeat;
-}
-
-/* ROW */
-.row {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 12px;
-}
-
-/* BUTTON */
-.join-btn {
-  background: var(--soft);
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.join-btn:hover {
-  opacity: 0.8;
-}
-
-/* ONLINE */
-.online-box {
-  background: var(--soft);
-  padding: 10px 15px;
-  border-radius: 10px;
-}
-
-/* STATS */
-.stats {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-  background: var(--soft);
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.stat {
-  text-align: center;
-  font-size: 12px;
-}
-
-/* TOGGLE */
-.toggle {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-/* OWNER PANEL */
-.owner-panel {
-  margin-top: 15px;
-  background: var(--soft);
-  padding: 10px;
-  border-radius: 10px;
-  display: none;
-}
-</style>
 </head>
-
 <body>
 
-<!-- ☰ MENU LUAR -->
-<div class="menu-btn" onclick="openOwner()">☰</div>
+<!-- ☰ MENU -->
+<div class="menu-btn" onclick="toggleMenu()">
+  <i class="fa-solid fa-bars"></i>
+</div>
+
+<!-- DROPDOWN -->
+<div id="menuDropdown" class="menu-dropdown">
+  <div onclick="openTab('home')"><i class="fa-solid fa-house"></i> Home</div>
+  <div onclick="openTab('howto')"><i class="fa-solid fa-book"></i> How To Play</div>
+</div>
 
 <div class="card">
 
-  <div id="statusBox" class="status-box"></div>
+  <!-- HOME -->
+  <div id="homeTab" class="tab active slide-in">
 
-  <div class="toggle" onclick="toggleMode()">🌓</div>
+    <div id="statusBox" class="status-box"></div>
 
-  <div class="title">TerorismePS</div>
-  <div id="statusText" class="status-text">-</div>
-
-  <div class="banner"></div>
-
-  <div class="row">
-    <div class="join-btn" onclick="join()">JOIN SERVER</div>
-    <div class="online-box"><span id="players">0</span> online</div>
-  </div>
-
-  <div class="stats">
-    <div class="stat">🌍<br><span id="worlds">0</span><br>Worlds</div>
-    <div class="stat">👤<br><span id="accounts">0</span><br>Accounts</div>
-    <div class="stat">🛡<br><span id="guilds">0</span><br>Guilds</div>
-  </div>
-
-  <!-- OWNER PANEL -->
-  <div id="ownerPanel" class="owner-panel">
-    <div class="stats">
-      <div class="stat">⚡<br><span id="cpu">0</span><br>CPU</div>
-      <div class="stat">🧠<br><span id="ram">0</span><br>RAM</div>
+    <div class="toggle" onclick="toggleMode()">
+      <i class="fa-solid fa-moon"></i>
     </div>
+
+    <div class="title">TerorismePS</div>
+    <div id="statusText" class="status-text">-</div>
+
+    <div class="banner"></div>
+
+    <div class="row">
+      <div class="join-btn" onclick="join()">
+        <i class="fa-solid fa-play"></i> JOIN
+      </div>
+      <div class="online-box">
+        <i class="fa-solid fa-users"></i> <span id="players">0</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><i class="fa-solid fa-globe"></i><br><span id="worlds">0</span></div>
+      <div class="stat"><i class="fa-solid fa-user"></i><br><span id="accounts">0</span></div>
+      <div class="stat"><i class="fa-solid fa-shield"></i><br><span id="guilds">0</span></div>
+    </div>
+
+  </div>
+
+  <!-- HOW TO PLAY -->
+  <div id="howtoTab" class="tab">
+
+    <div class="title">How To Play</div>
+
+    <div class="howto-box">
+
+      <div class="step active">
+        <h3>Step 1</h3>
+        <p>Download Growtopia</p>
+      </div>
+
+      <div class="step">
+        <h3>Step 2</h3>
+        <p>Install APK / Client</p>
+      </div>
+
+      <div class="step">
+        <h3>Step 3</h3>
+        <p>Connect ke server</p>
+      </div>
+
+      <div class="step">
+        <h3>Step 4</h3>
+        <p>Klik JOIN SERVER</p>
+      </div>
+
+      <div class="step">
+        <h3>Step 5</h3>
+        <p>Enjoy 🔥</p>
+      </div>
+
+      <div class="howto-nav">
+        <button onclick="prevStep()">Prev</button>
+        <button onclick="nextStep()">Next</button>
+      </div>
+
+    </div>
+
   </div>
 
 </div>
 
-<script>
-// JOIN
-function join() {
-  window.open("https://chat.whatsapp.com/DpHWmAOsvi16FNxbmwIP7u?mode=gi_t", "_blank");
-}
-
-// DARK MODE
-function toggleMode() {
-  document.body.classList.toggle("dark");
-}
-
-// OWNER MENU
-function openOwner() {
-  const pass = prompt("Owner password:");
-
-  if (pass === "admin123") {
-    document.getElementById("ownerPanel").style.display = "block";
-    loadOwner();
-  } else {
-    alert("Wrong password");
-  }
-}
-
-// LOAD OWNER DATA
-async function loadOwner() {
-  const res = await fetch("/api/status");
-  const data = await res.json();
-
-  document.getElementById("cpu").innerText = data.cpu + "%";
-  document.getElementById("ram").innerText = data.ram.used + " GB";
-}
-
-// LOAD DATA
-async function load() {
-  const res = await fetch("/api/status");
-  const data = await res.json();
-
-  const box = document.getElementById("statusBox");
-  const text = document.getElementById("statusText");
-
-  if (data.status === "online") {
-    box.style.background = "#3fb950";
-    text.innerText = "SERVER ONLINE";
-  } else {
-    box.style.background = "#f85149";
-    text.innerText = "SERVER OFFLINE";
-  }
-
-  document.getElementById("players").innerText = data.players;
-  document.getElementById("worlds").innerText = data.worlds || 0;
-  document.getElementById("accounts").innerText = data.accounts || 0;
-  document.getElementById("guilds").innerText = data.guilds || 0;
-}
-
-setInterval(load, 3000);
-load();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
