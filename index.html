@@ -5,12 +5,193 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TerorismePS</title>
 
-<link rel="stylesheet" href="style.css">
-
 <!-- FONT AWESOME -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<style>
+:root {
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --text: #111;
+  --soft: #f0f0f0;
+}
+
+.dark {
+  --bg: #0f1115;
+  --card: #161b22;
+  --text: #e6edf3;
+  --soft: #21262d;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  transition: 0.3s;
+}
+
+/* ☰ MENU */
+.menu-btn {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  background: var(--card);
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 999;
+}
+
+/* DROPDOWN */
+.menu-dropdown {
+  position: fixed;
+  top: 45px;
+  right: 15px;
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: none;
+  overflow: hidden;
+}
+
+.menu-dropdown div {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.menu-dropdown div:hover {
+  background: var(--soft);
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  width: 400px;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+}
+
+/* TAB */
+.tab { display: none; }
+.tab.active { display: block; animation: slide 0.4s ease; }
+
+@keyframes slide {
+  from { transform: translateX(30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* STATUS BOX */
+.status-box {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* STATUS TEXT */
+.status-text {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* BANNER */
+.banner {
+  width: 100%;
+  height: 130px;
+  border-radius: 15px;
+  background: url('/banner.png') center/cover no-repeat;
+}
+
+/* ROW */
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+/* BUTTON */
+.join-btn {
+  background: var(--soft);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ONLINE */
+.online-box {
+  background: var(--soft);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.stat {
+  text-align: center;
+  font-size: 12px;
+}
+
+/* TOGGLE */
+.toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* OWNER PANEL */
+.owner-panel {
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+}
+
+/* HOW TO PLAY */
+.howto-box {
+  margin-top: 15px;
+  background: var(--soft);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.step { display: none; }
+.step.active { display: block; }
+
+.howto-nav {
+  margin-top: 10px;
+}
+</style>
 </head>
+
 <body>
 
 <!-- ☰ MENU -->
@@ -22,84 +203,171 @@
 <div id="menuDropdown" class="menu-dropdown">
   <div onclick="openTab('home')"><i class="fa-solid fa-house"></i> Home</div>
   <div onclick="openTab('howto')"><i class="fa-solid fa-book"></i> How To Play</div>
+  <div onclick="openOwner()"><i class="fa-solid fa-lock"></i> Owner</div>
 </div>
 
 <div class="card">
 
-  <!-- HOME -->
-  <div id="homeTab" class="tab active slide-in">
+<!-- HOME TAB -->
+<div id="homeTab" class="tab active">
 
-    <div id="statusBox" class="status-box"></div>
+  <div id="statusBox" class="status-box"></div>
 
-    <div class="toggle" onclick="toggleMode()">
-      <i class="fa-solid fa-moon"></i>
-    </div>
-
-    <div class="title">TerorismePS</div>
-    <div id="statusText" class="status-text">-</div>
-
-    <div class="banner"></div>
-
-    <div class="row">
-      <div class="join-btn" onclick="join()">
-        <i class="fa-solid fa-play"></i> JOIN
-      </div>
-      <div class="online-box">
-        <i class="fa-solid fa-users"></i> <span id="players">0</span>
-      </div>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><i class="fa-solid fa-globe"></i><br><span id="worlds">0</span></div>
-      <div class="stat"><i class="fa-solid fa-user"></i><br><span id="accounts">0</span></div>
-      <div class="stat"><i class="fa-solid fa-shield"></i><br><span id="guilds">0</span></div>
-    </div>
-
+  <div class="toggle" onclick="toggleMode()">
+    <i class="fa-solid fa-moon"></i>
   </div>
 
-  <!-- HOW TO PLAY -->
-  <div id="howtoTab" class="tab">
+  <div class="title">TerorismePS</div>
+  <div id="statusText" class="status-text">-</div>
 
-    <div class="title">How To Play</div>
+  <div class="banner"></div>
 
-    <div class="howto-box">
-
-      <div class="step active">
-        <h3>Step 1</h3>
-        <p>Download Growtopia</p>
-      </div>
-
-      <div class="step">
-        <h3>Step 2</h3>
-        <p>Install APK / Client</p>
-      </div>
-
-      <div class="step">
-        <h3>Step 3</h3>
-        <p>Connect ke server</p>
-      </div>
-
-      <div class="step">
-        <h3>Step 4</h3>
-        <p>Klik JOIN SERVER</p>
-      </div>
-
-      <div class="step">
-        <h3>Step 5</h3>
-        <p>Enjoy 🔥</p>
-      </div>
-
-      <div class="howto-nav">
-        <button onclick="prevStep()">Prev</button>
-        <button onclick="nextStep()">Next</button>
-      </div>
-
+  <div class="row">
+    <div class="join-btn" onclick="join()">
+      <i class="fa-solid fa-play"></i> JOIN SERVER
     </div>
+    <div class="online-box">
+      <i class="fa-solid fa-users"></i> <span id="players">0</span>
+    </div>
+  </div>
 
+  <div class="stats">
+    <div class="stat">🌍<br><span id="worlds">0</span></div>
+    <div class="stat">👤<br><span id="accounts">0</span></div>
+    <div class="stat">🛡<br><span id="guilds">0</span></div>
+  </div>
+
+  <div id="ownerPanel" class="owner-panel">
+    <div class="stats">
+      <div class="stat">⚡<br><span id="cpu">0</span></div>
+      <div class="stat">🧠<br><span id="ram">0</span></div>
+    </div>
   </div>
 
 </div>
 
-<script src="script.js"></script>
+<!-- HOW TO PLAY TAB -->
+<div id="howtoTab" class="tab">
+
+  <div class="title">How To Play</div>
+
+  <div class="howto-box">
+    <div class="step active"><h3>1</h3><p>Download Growtopia</p></div>
+    <div class="step"><h3>2</h3><p>Install APK</p></div>
+    <div class="step"><h3>3</h3><p>Connect ke server</p></div>
+    <div class="step"><h3>4</h3><p>Click JOIN</p></div>
+    <div class="step"><h3>5</h3><p>Enjoy 🔥</p></div>
+
+    <div class="howto-nav">
+      <button onclick="prevStep()">Prev</button>
+      <button onclick="nextStep()">Next</button>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+// DARK MODE LOAD
+if (localStorage.getItem("dark") === "true") {
+  document.body.classList.add("dark");
+}
+
+// JOIN
+function join() {
+  window.open("https://chat.whatsapp.com/DpHWmAOsvi16FNxbmwIP7u?mode=gi_t", "_blank");
+}
+
+// DARK MODE
+function toggleMode() {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("dark", document.body.classList.contains("dark"));
+}
+
+// MENU
+function toggleMenu() {
+  const m = document.getElementById("menuDropdown");
+  m.style.display = m.style.display === "block" ? "none" : "block";
+}
+
+// TAB
+function openTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById(tab + "Tab").classList.add("active");
+  document.getElementById("menuDropdown").style.display = "none";
+}
+
+// HOWTO STEP
+let currentStep = 0;
+const steps = document.querySelectorAll(".step");
+
+function showStep(i) {
+  steps.forEach(s => s.classList.remove("active"));
+  steps[i].classList.add("active");
+}
+
+function nextStep() {
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    showStep(currentStep);
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    showStep(currentStep);
+  }
+}
+
+// OWNER
+function openOwner() {
+  const pass = prompt("Owner password:");
+  if (pass === "admin123") {
+    document.getElementById("ownerPanel").style.display = "block";
+    loadOwner();
+  } else {
+    alert("Wrong password");
+  }
+}
+
+// LOAD OWNER
+async function loadOwner() {
+  const res = await fetch("/api/status");
+  const data = await res.json();
+  document.getElementById("cpu").innerText = data.cpu + "%";
+  document.getElementById("ram").innerText = data.ram.used + " GB";
+}
+
+// LOAD DATA
+async function load() {
+  const res = await fetch("/api/status");
+  const data = await res.json();
+
+  const box = document.getElementById("statusBox");
+  const text = document.getElementById("statusText");
+
+  if (data.status === "online") {
+    box.style.background = "#3fb950";
+    text.innerText = "SERVER ONLINE";
+  } else {
+    box.style.background = "#f85149";
+    text.innerText = "SERVER OFFLINE";
+  }
+
+  document.getElementById("players").innerText = data.players;
+  document.getElementById("worlds").innerText = data.worlds || 0;
+  document.getElementById("accounts").innerText = data.accounts || 0;
+  document.getElementById("guilds").innerText = data.guilds || 0;
+}
+
+setInterval(load, 3000);
+load();
+
+// INIT
+showStep(currentStep);
+</script>
+
 </body>
 </html>
