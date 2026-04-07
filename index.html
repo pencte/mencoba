@@ -174,53 +174,30 @@ body {
   display: none;
 }
 
-/* HOWTO LAYOUT */
-.howto-layout {
-  display: flex;
-  gap: 20px;
-}
-
-.howto-sidebar {
-  width: 180px;
-  background: var(--soft);
-  padding: 15px;
-  border-radius: 15px;
-}
-
-.menu-item {
-  padding: 8px;
-  margin-top: 5px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.menu-item.active {
-  background: #4f7cff;
-  color: white;
-}
-
+/* HOWTO CONTENT */
 .howto-content {
-  flex: 1;
   background: var(--soft);
   padding: 20px;
   border-radius: 15px;
+  margin-top: 10px;
 }
 
 /* PLATFORM */
 .platform {
-  padding: 8px 12px;
-  margin-right: 5px;
+  padding: 8px 14px;
+  margin-right: 6px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  background: #2d3748;
+  color: #fff;
 }
 
 .platform.active {
   background: #4f7cff;
-  color: white;
 }
 
-/* HOWTO BUTTONS */
+/* BUTTON */
 .howto-buttons button {
   position: relative;
   overflow: hidden;
@@ -323,29 +300,17 @@ body {
 <!-- HOW TO PLAY -->
 <div id="howtoTab" class="tab">
 
-  <div class="howto-layout">
+  <div class="howto-content">
 
-    <div class="howto-sidebar">
-      <h2>TerorismePS</h2>
-      <div onclick="toggleMode()">🌙 / ☀ Mode</div>
-      <div class="menu-item">Dashboard</div>
-      <div class="menu-item active">How To Play</div>
-      <div class="menu-item">Rules</div>
+    <h2>How To Play</h2>
+
+    <div>
+      <button class="platform active" onclick="switchPlatform('android', this)">Android</button>
+      <button class="platform" onclick="switchPlatform('windows', this)">Windows</button>
+      <button class="platform" onclick="switchPlatform('ios', this)">iOS</button>
     </div>
 
-    <div class="howto-content">
-
-      <h2>How To Play</h2>
-
-      <div>
-        <button class="platform active" onclick="switchPlatform('android', this)">Android</button>
-        <button class="platform" onclick="switchPlatform('windows', this)">Windows</button>
-        <button class="platform" onclick="switchPlatform('ios', this)">iOS</button>
-      </div>
-
-      <div id="howtoText" class="howto-text"></div>
-
-    </div>
+    <div id="howtoText" class="howto-text"></div>
 
   </div>
 
@@ -497,7 +462,7 @@ async function load() {
 setInterval(load, 3000);
 load();
 
-// INIT DEFAULT TAB
+// INIT
 switchPlatform("android", document.querySelector(".platform"));
 </script>
 
